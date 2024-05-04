@@ -15,16 +15,15 @@ RUN DEBIAN_FRONTEND=noninteractive && apt-get update && \
     gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl \
     gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
 
-#Let's try this: MAKE sure you're config file is updated
+# Let's try this: MAKE sure you're config file is updated
 RUN DEBIAN_FRONTEND=noninteractive && pip3 install --break-system-packages yt-dlp
 
 # This works, but youtube-dl fails to load the file:
-#RUN pip3 install --break-system-packages --upgrade youtube-dl
+# RUN pip3 install --break-system-packages --upgrade youtube-dl
 
 # Official youtube-dl installation process is blocked due to legal reasons
-#RUN wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl && chmod a+rx /usr/local/bin/youtube-dl
+# RUN wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl && chmod a+rx /usr/local/bin/youtube-dl
 
-# Change from here?...
 RUN DEBIAN_FRONTEND=noninteractive && apt-get -y install mopidy \
   && pip3 install --break-system-packages mopidy-youtube
 
@@ -38,18 +37,12 @@ RUN mkdir -p /opt/homebrew/lib/python3.11/site-packages/yt_dlp; mkdir -p /opt/ho
 
 # Default configuration.
 COPY mopidy.conf /config/mopidy.conf
-# Copy the pulse-client configuratrion.
-# COPY pulse-client.conf /etc/pulse/client.conf
 
 RUN mopidy --version
 
-#VOLUME ["/var/lib/mopidy/local", "/var/lib/mopidy/media"]
-
 EXPOSE 6600 6680 5555/udp
 
-#ENTRYPOINT ["/usr/bin/dumb-init", "/entrypoint.sh"]
 ENTRYPOINT ["mopidy"]
-#CMD ["--config /config/mopidy.conf"]
 
 HEALTHCHECK --interval=5s --timeout=2s --retries=20 \
     CMD curl --connect-timeout 5 --silent --show-error --fail http://localhost:6680/ || exit 1
