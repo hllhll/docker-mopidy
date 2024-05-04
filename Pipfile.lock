@@ -576,7 +576,7 @@
                 "sha256:a4c02ced108a70da41a690ce3fb9c643acdc93076e40356eaeb4ae55a053ac9c"
             ],
             "markers": "python_version >= '3.5'",
-            "version": "==0.17.3"
+            "version": ">=0.19"
         }
     },
     "develop": {}
